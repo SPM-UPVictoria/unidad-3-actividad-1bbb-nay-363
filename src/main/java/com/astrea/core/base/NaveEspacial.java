@@ -10,27 +10,55 @@ public abstract class NaveEspacial {
     protected double capacidadCombustible;
 
     public NaveEspacial(String matricula, String modelo, double combustibleInicial, double capacidadCombustible) throws AstreaException {
-        // TODO: Implementar validaciones y asignación
+		if (matricula == null || matricula.isBlank()) {
+            throw new AstreaException("La matricula no puede ser nula o vacia.");
+        }
+        if (modelo == null || modelo.isBlank()) {
+            throw new AstreaException("El modelo no puede ser nulo o vacio.");
+        }
+        if (capacidadCombustible <= 0) {
+            throw new AstreaException("La capacidad de combustible debe ser estrictamente positiva.");
+        }
+        if (combustibleInicial < 0) {
+            throw new AstreaException("El combustible inicial no puede ser negativo.");
+        }
+        if (combustibleInicial > capacidadCombustible) {
+            throw new AstreaException(
+                    "El combustible inicial (" + combustibleInicial
+                            + ") no puede superar la capacidad maxima (" + capacidadCombustible + ").");
+        }
+		
+        this.matricula = matricula;
+		this.modelo = modelo;
+		this.combustible = combustibleInicial;
+		this.capacidadCombustible = capacidadCombustible;
     }
 
     public void repostarCombustible(double cantidad) throws AstreaException {
-        // TODO: Implementar lógica
+        if (cantidad < 0) {
+            throw new AstreaException("La cantidad a repostar no puede ser negativa.");
+        }
+        if (this.combustible + cantidad > this.capacidadCombustible) {
+            throw new AstreaException(
+                    "El repostaje excede la capacidad maxima de combustible de la nave.");
+        }
+        this.combustible += cantidad;
     }
 
     public String getMatricula() {
-        return null; // TODO: Implementar
+        return matricula;
     }
 
     public String getModelo() {
-        return null; // TODO: Implementar
+        return modelo; 
     }
 
     public double getCombustible() {
-        return 0.0; // TODO: Implementar
+        return combustible;
     }
 
     public double getCapacidadCombustible() {
-        return 0.0; // TODO: Implementar
+        return capacidadCombustible;
     }
 
     public abstract void viajar(double distanciaAniosLuz) throws CombustibleInsuficienteException, AstreaException;
